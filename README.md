@@ -1,17 +1,18 @@
-Ejecutar el script ```repositories_init.sh```
+# Ejecutar el script ```repositories_init.sh```
 
-Para instalar el vendor usando el node de los contenedores:
+Este script descarga los repositorios de las apps del sistema.
 
-```cd apps/erp_api```
-```docker-compose run --rm erp_api npm install```
+Va a crear la carpeta ```/app``` y dentro ```/admin_app``` y ```/erp_api```.
 
-```cd apps/admin_app```
-```docker-compose run --rm admin_app npm install```
-
-Construir las imagenes de los contenedores
+# Construir las imagenes de los contenedores.
 
 ```docker-compose build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) ```
 
-Despues de instalar las librerias, levantar el proyecto con:
+# Instalar el node_modules usando el node de los contenedores:
+
+```docker-compose run --rm erp_api npm install```
+```docker-compose run --rm admin_app npm install```
+
+# Despues de instalar las librerias, levantar el proyecto con:
 
 ```docker-compose up```
