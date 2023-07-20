@@ -1,0 +1,47 @@
+version: "3.8"
+# docker-compose build --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) 
+services:
+  erp_api:
+    ports:
+      - '3000:3000'
+    stdin_open: true
+    tty: true
+    build:
+      context: ./
+      dockerfile: dockerfiles/erp_api/Dockerfile
+    volumes:
+      - ./apps/erp_api:/api
+    networks:
+      - nutras_erp_network
+    depends_on:
+      - database
+  admin_app:
+    ports:
+      - '5173:5173'
+    stdin_open: true
+    tty: true
+    build:
+      context: ./
+      dockerfile: dockerfiles/admin_app/Dockerfile
+    volumes:
+      - ./apps/admin_app:/app
+    networks:
+      - nutras_erp_network
+    depends_on:
+      - erp_api
+  database:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    restart: always
+    volumes:
+      - ./db/postgres:/var/lib/postgresql/data:z
+    networks:
+      - nutras_erp_network
+
+networks:
+  nutras_erp_network:
